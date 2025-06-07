@@ -8,6 +8,10 @@
 
 A comprehensive web application designed to help Dungeon Masters manage their D&D campaigns, NPCs, encounters, and more.
 
+## 🤖 About This Project
+
+This entire application was built as an experiment with [Claude Code](https://claude.ai/code), Anthropic's AI-powered development environment. Every line of code, feature implementation, test, and infrastructure setup was generated through conversations with Claude Code. This project serves as a practical demonstration of AI-assisted software development, showcasing how modern AI can handle full-stack development tasks from initial setup through deployment and maintenance.
+
 ## 🛡️ Security & Quality Status
 
 | Pipeline | Status | Description |
