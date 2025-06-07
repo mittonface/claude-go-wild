@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/mittonface/claude-go-wild/compare/v1.0.1...v1.0.2) (2025-06-07)
+
+
+### Bug Fixes
+
+* replace flaky dice test with deterministic mocked version ([e87338e](https://github.com/mittonface/claude-go-wild/commit/e87338ee4c752c1ffe5600ada218b3514920fc07))
+
 ## [1.0.1](https://github.com/mittonface/claude-go-wild/compare/v1.0.0...v1.0.1) (2025-06-07)
 
 
