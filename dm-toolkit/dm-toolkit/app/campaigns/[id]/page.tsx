@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect, use, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -47,11 +47,7 @@ export default function CampaignDetailPage({
   const [editForm, setEditForm] = useState({ name: '', description: '' })
   const router = useRouter()
 
-  useEffect(() => {
-    fetchCampaign()
-  }, [id])
-
-  const fetchCampaign = async () => {
+  const fetchCampaign = useCallback(async () => {
     try {
       const response = await fetch(`/api/campaigns/${id}`)
       if (response.ok) {
@@ -66,7 +62,11 @@ export default function CampaignDetailPage({
     } finally {
       setLoading(false)
     }
-  }
+  }, [id, router])
+
+  useEffect(() => {
+    fetchCampaign()
+  }, [fetchCampaign])
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()

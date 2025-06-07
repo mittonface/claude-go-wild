@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -41,11 +41,7 @@ export default function NPCsPage() {
   const [gender, setGender] = useState<'male' | 'female'>('male')
   const [level, setLevel] = useState(1)
 
-  useEffect(() => {
-    fetchNPCs()
-  }, [campaignId])
-
-  const fetchNPCs = async () => {
+  const fetchNPCs = useCallback(async () => {
     try {
       const url = campaignId ? `/api/npcs?campaign=${campaignId}` : '/api/npcs'
       const response = await fetch(url)
@@ -56,7 +52,11 @@ export default function NPCsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [campaignId])
+
+  useEffect(() => {
+    fetchNPCs()
+  }, [fetchNPCs])
 
   const generateNPC = async () => {
     try {
