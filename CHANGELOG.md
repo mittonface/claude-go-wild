@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/mittonface/claude-go-wild/compare/v1.0.0...v1.0.1) (2025-06-07)
+
+
+### Bug Fixes
+
+* resolve PR checks workflow failures ([e2b5458](https://github.com/mittonface/claude-go-wild/commit/e2b5458d6bf69e133aa28a50b7bebd962c6e9f35))
+
 # 1.0.0 (2025-06-07)
 
 
