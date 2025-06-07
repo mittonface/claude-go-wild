@@ -4,7 +4,7 @@ import {
   generateTreasureHoard, 
   calculateTotalValue 
 } from '../loot'
-import { ItemRarity } from '@/types'
+import { ItemRarity, ItemType } from '@/types'
 
 describe('Loot Generation', () => {
   describe('generateLootByRarity', () => {
@@ -129,9 +129,9 @@ describe('Loot Generation', () => {
 
     it('should sum all item values correctly', () => {
       const items = [
-        { name: 'Item 1', type: 'Weapon', rarity: 'Common' as ItemRarity, value: 100, weight: 1 },
-        { name: 'Item 2', type: 'Armor', rarity: 'Uncommon' as ItemRarity, value: 250, weight: 1 },
-        { name: 'Item 3', type: 'Potion', rarity: 'Rare' as ItemRarity, value: 500, weight: 1 }
+        { name: 'Item 1', type: 'Weapon' as ItemType, rarity: 'Common' as ItemRarity, value: 100, weight: 1 },
+        { name: 'Item 2', type: 'Armor' as ItemType, rarity: 'Uncommon' as ItemRarity, value: 250, weight: 1 },
+        { name: 'Item 3', type: 'Potion' as ItemType, rarity: 'Rare' as ItemRarity, value: 500, weight: 1 }
       ]
       
       expect(calculateTotalValue(items)).toBe(850)
@@ -139,9 +139,9 @@ describe('Loot Generation', () => {
 
     it('should handle items without values', () => {
       const items = [
-        { name: 'Item 1', type: 'Weapon', rarity: 'Common' as ItemRarity, value: 100, weight: 1 },
-        { name: 'Item 2', type: 'Armor', rarity: 'Uncommon' as ItemRarity, weight: 1 },
-        { name: 'Item 3', type: 'Potion', rarity: 'Rare' as ItemRarity, value: 300, weight: 1 }
+        { name: 'Item 1', type: 'Weapon' as ItemType, rarity: 'Common' as ItemRarity, value: 100, weight: 1 },
+        { name: 'Item 2', type: 'Armor' as ItemType, rarity: 'Uncommon' as ItemRarity, weight: 1 },
+        { name: 'Item 3', type: 'Potion' as ItemType, rarity: 'Rare' as ItemRarity, value: 300, weight: 1 }
       ]
       
       expect(calculateTotalValue(items)).toBe(400)
