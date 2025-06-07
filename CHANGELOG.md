@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/mittonface/claude-go-wild/compare/v1.0.4...v1.1.0) (2025-06-07)
+
+
+### Features
+
+* comprehensive pipeline visibility and security enhancements ([f181582](https://github.com/mittonface/claude-go-wild/commit/f181582cca707d6475283c211b459723c21d9141))
+
 ## [1.0.4](https://github.com/mittonface/claude-go-wild/compare/v1.0.3...v1.0.4) (2025-06-07)
 
 
