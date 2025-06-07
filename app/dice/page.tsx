@@ -26,6 +26,7 @@ export default function DicePage() {
   const [formula, setFormula] = useState('')
   const [history, setHistory] = useState<DiceRoll[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [advantage, setAdvantage] = useState(false)
   const [disadvantage, setDisadvantage] = useState(false)
   const [lastRoll, setLastRoll] = useState<{ rolls: number[], total: number } | null>(null)
@@ -36,11 +37,16 @@ export default function DicePage() {
 
   const fetchHistory = async () => {
     try {
+      setError(null)
       const response = await fetch('/api/dice')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const data = await response.json()
       setHistory(data)
     } catch (error) {
       console.error('Failed to fetch dice roll history:', error)
+      setError(error instanceof Error ? error.message : 'Failed to fetch dice roll history')
     } finally {
       setLoading(false)
     }
@@ -50,6 +56,7 @@ export default function DicePage() {
     if (!rollFormula) return
     
     try {
+      setError(null)
       const response = await fetch('/api/dice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,13 +67,16 @@ export default function DicePage() {
         })
       })
       
-      if (response.ok) {
-        const data = await response.json()
-        setLastRoll({ rolls: data.rolls, total: data.total })
-        fetchHistory()
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
+      
+      const data = await response.json()
+      setLastRoll({ rolls: data.rolls, total: data.total })
+      fetchHistory()
     } catch (error) {
       console.error('Failed to roll dice:', error)
+      setError(error instanceof Error ? error.message : 'Failed to roll dice')
     }
   }
 
@@ -83,10 +93,35 @@ export default function DicePage() {
     }
   }
 
+  if (error && !loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white p-8">
+        <div className="container mx-auto max-w-4xl">
+          <h1 className="text-4xl font-bold text-purple-400 mb-8">Dice Roller</h1>
+          <div className="bg-red-900 bg-opacity-30 border border-red-500 rounded-lg p-4">
+            <p className="text-red-300">Error loading dice roller: {error}</p>
+            <button 
+              onClick={() => {setError(null); fetchHistory()}}
+              className="mt-4 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="container mx-auto max-w-4xl">
         <h1 className="text-4xl font-bold text-purple-400 mb-8">Dice Roller</h1>
+
+        {error && (
+          <div className="bg-red-900 bg-opacity-30 border border-red-500 rounded-lg p-4 mb-8">
+            <p className="text-red-300">Error: {error}</p>
+          </div>
+        )}
 
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
           <form onSubmit={handleSubmit} className="mb-4">
