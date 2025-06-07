@@ -132,7 +132,7 @@ npm run test
 
 ### Performance Monitoring  
 - **Lighthouse CI**: Performance audits on every PR
-- **Performance Budgets**: Enforced minimum scores (80% performance, 90% accessibility)
+- **Performance Budgets**: Enforced minimum scores (80% performance, 60% accessibility)
 - **Web Vitals**: Core Web Vitals tracking and optimization
 - **Multi-page Analysis**: Home, Dice, NPCs, and Encounters pages tested
 
