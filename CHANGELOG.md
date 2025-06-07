@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/mittonface/claude-go-wild/compare/v1.1.0...v1.1.1) (2025-06-07)
+
+
+### Bug Fixes
+
+* adjust Lighthouse accessibility budget to realistic threshold ([931f754](https://github.com/mittonface/claude-go-wild/commit/931f754730f83fb7ce3e2b7dabb59d6ca3ac36a8))
+
 # [1.1.0](https://github.com/mittonface/claude-go-wild/compare/v1.0.4...v1.1.0) (2025-06-07)
 
 
