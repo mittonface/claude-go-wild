@@ -1,0 +1,57 @@
+name: Lighthouse Performance Audit
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Generate Prisma client
+      run: npx prisma generate
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Start application
+      run: |
+        npm start &
+        sleep 10
+        
+    - name: Run Lighthouse
+      uses: treosh/lighthouse-ci-action@v11
+      with:
+        urls: |
+          http://localhost:3000
+          http://localhost:3000/dice
+          http://localhost:3000/npcs
+          http://localhost:3000/encounters
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+        
+    - name: Comment PR with results
+      uses: treosh/lighthouse-ci-action@v11
+      if: github.event_name == 'pull_request'
+      with:
+        urls: |
+          http://localhost:3000
+          http://localhost:3000/dice
+          http://localhost:3000/npcs
+          http://localhost:3000/encounters
+        uploadArtifacts: true
+        temporaryPublicStorage: true
