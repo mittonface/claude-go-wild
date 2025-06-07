@@ -43,27 +43,55 @@ describe('Dice Rolling', () => {
 
   describe('rollAdvantage', () => {
     it('should return the higher of two rolls', () => {
-      const results: number[] = []
-      for (let i = 0; i < 10; i++) {
-        const result = rollAdvantage('1d20')
-        results.push(result.total)
-      }
+      // Mock Math.random to return deterministic values
+      const originalRandom = Math.random
+      Math.random = jest.fn()
+        .mockReturnValueOnce(0.05)  // First roll: 2
+        .mockReturnValueOnce(0.95)  // Second roll: 20
       
-      const average = results.reduce((sum, val) => sum + val, 0) / results.length
-      expect(average).toBeGreaterThan(10) // Should trend higher than average
+      const result = rollAdvantage('1d20')
+      expect(result.total).toBe(20) // Should return the higher roll
+      
+      Math.random = originalRandom
+    })
+
+    it('should handle ties by returning first roll', () => {
+      const originalRandom = Math.random
+      Math.random = jest.fn()
+        .mockReturnValueOnce(0.5)   // First roll: 11
+        .mockReturnValueOnce(0.5)   // Second roll: 11
+      
+      const result = rollAdvantage('1d20')
+      expect(result.total).toBe(11) // Should return first roll on tie
+      
+      Math.random = originalRandom
     })
   })
 
   describe('rollDisadvantage', () => {
     it('should return the lower of two rolls', () => {
-      const results: number[] = []
-      for (let i = 0; i < 10; i++) {
-        const result = rollDisadvantage('1d20')
-        results.push(result.total)
-      }
+      // Mock Math.random to return deterministic values
+      const originalRandom = Math.random
+      Math.random = jest.fn()
+        .mockReturnValueOnce(0.05)  // First roll: 2
+        .mockReturnValueOnce(0.95)  // Second roll: 20
       
-      const average = results.reduce((sum, val) => sum + val, 0) / results.length
-      expect(average).toBeLessThan(11) // Should trend lower than average
+      const result = rollDisadvantage('1d20')
+      expect(result.total).toBe(2) // Should return the lower roll
+      
+      Math.random = originalRandom
+    })
+
+    it('should handle ties by returning first roll', () => {
+      const originalRandom = Math.random
+      Math.random = jest.fn()
+        .mockReturnValueOnce(0.5)   // First roll: 11
+        .mockReturnValueOnce(0.5)   // Second roll: 11
+      
+      const result = rollDisadvantage('1d20')
+      expect(result.total).toBe(11) // Should return first roll on tie
+      
+      Math.random = originalRandom
     })
   })
 })
