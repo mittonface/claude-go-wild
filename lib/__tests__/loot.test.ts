@@ -48,13 +48,22 @@ describe('Loot Generation', () => {
     })
 
     it('should generate more valuable loot for high CR', () => {
-      const lowCR = generateLootByCR(1)
-      const highCR = generateLootByCR(20)
+      // Test multiple runs to account for randomness
+      let lowCRTotalValue = 0
+      let highCRTotalValue = 0
+      const runs = 5
       
-      const lowCRValue = calculateTotalValue(lowCR)
-      const highCRValue = calculateTotalValue(highCR)
+      for (let i = 0; i < runs; i++) {
+        const lowCR = generateLootByCR(1)
+        const highCR = generateLootByCR(20)
+        
+        lowCRTotalValue += calculateTotalValue(lowCR)
+        highCRTotalValue += calculateTotalValue(highCR)
+      }
       
-      expect(highCRValue).toBeGreaterThan(lowCRValue)
+      const lowCRAverage = lowCRTotalValue / runs
+      const highCRAverage = highCRTotalValue / runs
+      expect(highCRAverage).toBeGreaterThan(lowCRAverage)
     })
 
     it('should allow legendary items for very high CR', () => {
@@ -85,25 +94,44 @@ describe('Loot Generation', () => {
     })
 
     it('should scale with party level', () => {
-      const lowLevel = generateTreasureHoard(1)
-      const highLevel = generateTreasureHoard(20)
+      // Test multiple runs to account for randomness
+      let lowLevelTotalValue = 0
+      let highLevelTotalValue = 0
+      const runs = 5
       
-      const lowValue = calculateTotalValue(lowLevel)
-      const highValue = calculateTotalValue(highLevel)
+      for (let i = 0; i < runs; i++) {
+        const lowLevel = generateTreasureHoard(1)
+        const highLevel = generateTreasureHoard(20)
+        
+        lowLevelTotalValue += calculateTotalValue(lowLevel)
+        highLevelTotalValue += calculateTotalValue(highLevel)
+      }
       
-      expect(highValue).toBeGreaterThan(lowValue)
+      const lowLevelAverage = lowLevelTotalValue / runs
+      const highLevelAverage = highLevelTotalValue / runs
+      expect(highLevelAverage).toBeGreaterThan(lowLevelAverage)
     })
 
     it('should generate appropriate items for different levels', () => {
-      const lowLevel = generateTreasureHoard(3)
-      const highLevel = generateTreasureHoard(15)
+      // Test multiple runs to account for randomness
+      let lowTotalValue = 0
+      let highTotalValue = 0
+      const runs = 5
       
-      expect(lowLevel.length).toBeGreaterThan(0)
-      expect(highLevel.length).toBeGreaterThan(0)
+      for (let i = 0; i < runs; i++) {
+        const lowLevel = generateTreasureHoard(3)
+        const highLevel = generateTreasureHoard(15)
+        
+        expect(lowLevel.length).toBeGreaterThan(0)
+        expect(highLevel.length).toBeGreaterThan(0)
+        
+        lowTotalValue += calculateTotalValue(lowLevel)
+        highTotalValue += calculateTotalValue(highLevel)
+      }
       
-      const lowValue = calculateTotalValue(lowLevel)
-      const highValue = calculateTotalValue(highLevel)
-      expect(highValue).toBeGreaterThan(lowValue)
+      const lowAverage = lowTotalValue / runs
+      const highAverage = highTotalValue / runs
+      expect(highAverage).toBeGreaterThan(lowAverage)
     })
 
     it('should have appropriate rarity distribution by level', () => {
