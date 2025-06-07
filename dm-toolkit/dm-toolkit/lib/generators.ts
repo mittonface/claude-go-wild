@@ -90,3 +90,29 @@ export function generateStats(level: number = 1): Record<string, number> {
     proficiencyBonus
   }
 }
+
+const alignments = [
+  'Lawful Good', 'Neutral Good', 'Chaotic Good',
+  'Lawful Neutral', 'True Neutral', 'Chaotic Neutral', 
+  'Lawful Evil', 'Neutral Evil', 'Chaotic Evil'
+]
+
+export function generateNPC(level: number = 1, gender: 'male' | 'female' = Math.random() < 0.5 ? 'male' : 'female') {
+  const name = generateName(gender)
+  const race = generateRace()
+  const occupation = generateOccupation()
+  const stats = generateStats(level)
+  const traits = generateTraits(Math.floor(Math.random() * 3) + 2)
+  const alignment = alignments[Math.floor(Math.random() * alignments.length)]
+  
+  return {
+    name,
+    race,
+    class: occupation,
+    level,
+    alignment,
+    stats,
+    traits,
+    description: `A ${level > 1 ? 'seasoned' : 'young'} ${race.toLowerCase()} ${occupation.toLowerCase()}`
+  }
+}
