@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/mittonface/claude-go-wild/compare/v1.0.3...v1.0.4) (2025-06-07)
+
+
+### Bug Fixes
+
+* resolve Lighthouse workflow artifact conflict and update to v12 ([909a083](https://github.com/mittonface/claude-go-wild/commit/909a083a887bb46addf47eaac97bdf29fabcbe3e))
+
 ## [1.0.3](https://github.com/mittonface/claude-go-wild/compare/v1.0.2...v1.0.3) (2025-06-07)
 
 
