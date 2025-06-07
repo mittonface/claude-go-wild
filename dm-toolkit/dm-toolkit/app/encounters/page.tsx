@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -47,7 +47,7 @@ interface Campaign {
   name: string
 }
 
-export default function EncountersPage() {
+function EncountersContent() {
   const searchParams = useSearchParams()
   const campaignFilter = searchParams?.get('campaign')
   
@@ -65,11 +65,7 @@ export default function EncountersPage() {
     selectedNpcs: [] as { npcId: string; quantity: number }[]
   })
 
-  useEffect(() => {
-    fetchData()
-  }, [campaignFilter])
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true)
       const [encountersRes, campaignsRes, npcsRes] = await Promise.all([
@@ -86,7 +82,11 @@ export default function EncountersPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [campaignFilter])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const calculateEncounterStats = (encounter: Encounter) => {
     const thresholds = calculateEncounterDifficulty(encounter.partyLevel, encounter.partySize)
@@ -345,5 +345,13 @@ export default function EncountersPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function EncountersPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading encounters...</div>}>
+      <EncountersContent />
+    </Suspense>
   )
 }

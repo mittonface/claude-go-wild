@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -30,7 +30,7 @@ interface GeneratedNPC {
   description: string
 }
 
-export default function NPCsPage() {
+function NPCsContent() {
   const searchParams = useSearchParams()
   const campaignId = searchParams.get('campaign')
   
@@ -243,5 +243,13 @@ export default function NPCsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function NPCsPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading NPCs...</div>}>
+      <NPCsContent />
+    </Suspense>
   )
 }

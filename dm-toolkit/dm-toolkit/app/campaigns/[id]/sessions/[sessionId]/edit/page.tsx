@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -27,13 +27,7 @@ export default function EditSessionPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (sessionId) {
-      fetchSession()
-    }
-  }, [sessionId])
-
-  const fetchSession = async () => {
+  const fetchSession = useCallback(async () => {
     try {
       setLoading(true)
       const response = await fetch(`/api/sessions/${sessionId}`)
@@ -55,7 +49,13 @@ export default function EditSessionPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [sessionId])
+
+  useEffect(() => {
+    if (sessionId) {
+      fetchSession()
+    }
+  }, [sessionId, fetchSession])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

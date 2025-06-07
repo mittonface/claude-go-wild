@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -29,14 +29,7 @@ export default function SessionsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (campaignId) {
-      fetchCampaign()
-      fetchSessions()
-    }
-  }, [campaignId])
-
-  const fetchCampaign = async () => {
+  const fetchCampaign = useCallback(async () => {
     try {
       const response = await fetch(`/api/campaigns/${campaignId}`)
       if (response.ok) {
@@ -46,9 +39,9 @@ export default function SessionsPage() {
     } catch (err) {
       console.error('Error fetching campaign:', err)
     }
-  }
+  }, [campaignId])
 
-  const fetchSessions = async () => {
+  const fetchSessions = useCallback(async () => {
     try {
       setLoading(true)
       const response = await fetch(`/api/sessions?campaignId=${campaignId}`)
@@ -64,7 +57,14 @@ export default function SessionsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [campaignId])
+
+  useEffect(() => {
+    if (campaignId) {
+      fetchCampaign()
+      fetchSessions()
+    }
+  }, [campaignId, fetchCampaign, fetchSessions])
 
   const handleDeleteSession = async (sessionId: string) => {
     if (!confirm('Are you sure you want to delete this session?')) return
