@@ -1,0 +1,86 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install npm-check-updates
+      run: npm install -g npm-check-updates
+      
+    - name: Update dependencies
+      run: |
+        # Update patch and minor versions
+        ncu -u --target minor
+        npm install
+        
+    - name: Generate Prisma client
+      run: npx prisma generate
+      
+    - name: Run tests
+      run: npm run test:ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: update dependencies'
+        title: 'chore: update dependencies'
+        body: |
+          ## Dependency Updates
+          
+          This PR was automatically generated to update dependencies to their latest minor versions.
+          
+          ### Changes
+          - Updated npm dependencies to latest minor versions
+          - Regenerated Prisma client
+          - All tests and linting checks passed
+          
+          Please review the changes and merge if everything looks good.
+        branch: chore/dependency-updates
+        delete-branch: true
+        
+  security-audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      
+    - name: Run audit fix
+      run: npm audit fix --dry-run
