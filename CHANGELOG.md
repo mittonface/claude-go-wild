@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/mittonface/claude-go-wild/compare/v1.0.2...v1.0.3) (2025-06-07)
+
+
+### Bug Fixes
+
+* make loot generation tests more robust against randomness ([9eb7804](https://github.com/mittonface/claude-go-wild/commit/9eb78041ed9eb5b8ebb11239ef2c15c7b95e649d))
+
 ## [1.0.2](https://github.com/mittonface/claude-go-wild/compare/v1.0.1...v1.0.2) (2025-06-07)
 
 

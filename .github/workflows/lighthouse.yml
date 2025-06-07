@@ -33,20 +33,8 @@ jobs:
         npm start &
         sleep 10
         
-    - name: Run Lighthouse
-      uses: treosh/lighthouse-ci-action@v11
-      with:
-        urls: |
-          http://localhost:3000
-          http://localhost:3000/dice
-          http://localhost:3000/npcs
-          http://localhost:3000/encounters
-        uploadArtifacts: true
-        temporaryPublicStorage: true
-        
-    - name: Comment PR with results
-      uses: treosh/lighthouse-ci-action@v11
-      if: github.event_name == 'pull_request'
+    - name: Run Lighthouse and Comment PR
+      uses: treosh/lighthouse-ci-action@v12
       with:
         urls: |
           http://localhost:3000
