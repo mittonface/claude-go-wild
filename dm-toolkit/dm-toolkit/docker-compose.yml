@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=file:/app/data/prod.db
+    volumes:
+      - dm-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  dm-data:
