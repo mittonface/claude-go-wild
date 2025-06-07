@@ -3,11 +3,18 @@ name: Lighthouse Performance Audit
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      pages: write
+      id-token: write
     
     steps:
     - name: Checkout code
@@ -33,9 +40,38 @@ jobs:
         npm start &
         sleep 10
         
-    - name: Run Lighthouse and Comment PR
+    - name: Create Lighthouse config
+      run: |
+        cat > lighthouserc.json << 'EOF'
+        {
+          "ci": {
+            "collect": {
+              "numberOfRuns": 3,
+              "settings": {
+                "preset": "desktop"
+              }
+            },
+            "assert": {
+              "assertions": {
+                "categories:performance": ["error", {"minScore": 0.8}],
+                "categories:accessibility": ["error", {"minScore": 0.9}],
+                "categories:best-practices": ["error", {"minScore": 0.8}],
+                "categories:seo": ["error", {"minScore": 0.8}]
+              }
+            },
+            "upload": {
+              "target": "temporary-public-storage"
+            }
+          }
+        }
+        EOF
+        
+    - name: Run Lighthouse CI
       uses: treosh/lighthouse-ci-action@v12
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        configPath: './lighthouserc.json'
         urls: |
           http://localhost:3000
           http://localhost:3000/dice
@@ -43,3 +79,21 @@ jobs:
           http://localhost:3000/encounters
         uploadArtifacts: true
         temporaryPublicStorage: true
+        
+    - name: Generate Lighthouse Report Summary
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "## 🚀 Lighthouse Performance Report" >> lighthouse-summary.md
+        echo "" >> lighthouse-summary.md
+        echo "| Page | Performance | Accessibility | Best Practices | SEO |" >> lighthouse-summary.md
+        echo "|------|-------------|---------------|----------------|-----|" >> lighthouse-summary.md
+        echo "| 🏠 Home | [View Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) | - | - | - |" >> lighthouse-summary.md
+        echo "| 🎲 Dice | [View Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) | - | - | - |" >> lighthouse-summary.md
+        echo "| 🧙 NPCs | [View Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) | - | - | - |" >> lighthouse-summary.md
+        echo "| ⚔️ Encounters | [View Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) | - | - | - |" >> lighthouse-summary.md
+        echo "" >> lighthouse-summary.md
+        echo "📊 **Performance Budgets**: Enforcing minimum scores for optimal user experience" >> lighthouse-summary.md
+        echo "- Performance: 80+" >> lighthouse-summary.md
+        echo "- Accessibility: 90+" >> lighthouse-summary.md  
+        echo "- Best Practices: 80+" >> lighthouse-summary.md
+        echo "- SEO: 80+" >> lighthouse-summary.md

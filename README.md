@@ -1,6 +1,28 @@
 # DM Toolkit - D&D Campaign Manager
 
+[![CI](https://github.com/mittonface/claude-go-wild/actions/workflows/ci.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/mittonface/claude-go-wild/actions/workflows/codeql.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/codeql.yml)
+[![Lighthouse Performance](https://github.com/mittonface/claude-go-wild/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/lighthouse.yml)
+[![Release](https://github.com/mittonface/claude-go-wild/actions/workflows/release.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/release.yml)
+[![Dependency Updates](https://github.com/mittonface/claude-go-wild/actions/workflows/dependency-update.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/dependency-update.yml)
+
 A comprehensive web application designed to help Dungeon Masters manage their D&D campaigns, NPCs, encounters, and more.
+
+## 🛡️ Security & Quality Status
+
+| Pipeline | Status | Description |
+|----------|--------|-------------|
+| **Continuous Integration** | [![CI](https://github.com/mittonface/claude-go-wild/actions/workflows/ci.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/ci.yml) | Automated testing, linting, and building |
+| **CodeQL Security Analysis** | [![CodeQL](https://github.com/mittonface/claude-go-wild/actions/workflows/codeql.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/codeql.yml) | Automated security vulnerability scanning |
+| **Lighthouse Performance** | [![Lighthouse](https://github.com/mittonface/claude-go-wild/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/lighthouse.yml) | Web performance, accessibility & SEO audits |
+| **Automated Releases** | [![Release](https://github.com/mittonface/claude-go-wild/actions/workflows/release.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/release.yml) | Semantic versioning and automated releases |
+| **Dependency Updates** | [![Dependabot](https://github.com/mittonface/claude-go-wild/actions/workflows/dependency-update.yml/badge.svg)](https://github.com/mittonface/claude-go-wild/actions/workflows/dependency-update.yml) | Automated dependency security updates |
+
+### 📊 Quality Metrics
+- **Test Coverage**: Comprehensive unit and integration tests
+- **Performance**: Lighthouse audits on every PR  
+- **Security**: CodeQL analysis and Dependabot monitoring
+- **Code Quality**: ESLint, TypeScript strict mode, and automated formatting
 
 ## Features
 
@@ -99,6 +121,26 @@ Run tests in watch mode:
 ```bash
 npm run test
 ```
+
+## 🔒 Security & Performance Monitoring
+
+### Security Analysis
+- **CodeQL**: Automated vulnerability scanning on every commit
+- **Dependabot**: Automated dependency updates and security patches
+- **SARIF Reports**: Detailed security analysis in the Security tab
+- **Security Policy**: See [SECURITY.md](./SECURITY.md) for vulnerability reporting
+
+### Performance Monitoring  
+- **Lighthouse CI**: Performance audits on every PR
+- **Performance Budgets**: Enforced minimum scores (80% performance, 90% accessibility)
+- **Web Vitals**: Core Web Vitals tracking and optimization
+- **Multi-page Analysis**: Home, Dice, NPCs, and Encounters pages tested
+
+### Quality Assurance
+- **Continuous Integration**: Automated testing and building
+- **Code Quality**: ESLint, TypeScript strict mode
+- **Test Coverage**: Comprehensive unit and integration tests
+- **Automated Releases**: Semantic versioning with changelogs
 
 ## Development
 
