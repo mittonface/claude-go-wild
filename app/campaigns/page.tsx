@@ -75,31 +75,31 @@ export default function CampaignsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white p-8">
+      <div className="min-h-screen bg-gray-50 p-8">
         <div className="container mx-auto">
-          <p className="text-center">Loading campaigns...</p>
+          <p className="text-center text-gray-600">Loading campaigns...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="container mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-400">Campaigns</h1>
+          <h1 className="text-4xl font-bold text-gray-900">Campaigns</h1>
           <button
             onClick={() => setShowCreateForm(!showCreateForm)}
-            className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md transition-colors"
+            className="btn-primary"
           >
             {showCreateForm ? 'Cancel' : 'New Campaign'}
           </button>
         </div>
 
         {showCreateForm && (
-          <form onSubmit={handleCreate} className="bg-gray-800 p-6 rounded-lg mb-8">
+          <form onSubmit={handleCreate} className="bg-white p-6 rounded-lg mb-8 border border-gray-200">
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-700">
                 Campaign Name
               </label>
               <input
@@ -107,25 +107,25 @@ export default function CampaignsPage() {
                 id="name"
                 value={newCampaign.name}
                 onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700 rounded-md text-white"
+                className="input-modern"
                 required
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium mb-2">
+              <label htmlFor="description" className="block text-sm font-medium mb-2 text-gray-700">
                 Description
               </label>
               <textarea
                 id="description"
                 value={newCampaign.description}
                 onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
-                className="w-full px-3 py-2 bg-gray-700 rounded-md text-white"
+                className="input-modern"
                 rows={3}
               />
             </div>
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md transition-colors"
+              className="btn-primary"
             >
               Create Campaign
             </button>
@@ -133,16 +133,16 @@ export default function CampaignsPage() {
         )}
 
         {campaigns.length === 0 ? (
-          <p className="text-center text-gray-400">No campaigns yet. Create your first campaign!</p>
+          <p className="text-center text-gray-600">No campaigns yet. Create your first campaign!</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {campaigns.map((campaign) => (
-              <div key={campaign.id} className="bg-gray-800 rounded-lg p-6">
-                <h2 className="text-2xl font-semibold mb-2 text-purple-300">
+              <div key={campaign.id} className="card-modern p-6">
+                <h2 className="text-2xl font-semibold mb-2 text-gray-900">
                   {campaign.name}
                 </h2>
                 {campaign.description && (
-                  <p className="text-gray-400 mb-4">{campaign.description}</p>
+                  <p className="text-gray-600 mb-4">{campaign.description}</p>
                 )}
                 <div className="text-sm text-gray-500 mb-4">
                   <p>{campaign._count.sessions} sessions</p>
@@ -152,13 +152,13 @@ export default function CampaignsPage() {
                 <div className="flex gap-2">
                   <Link
                     href={`/campaigns/${campaign.id}`}
-                    className="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="btn-primary text-sm"
                   >
                     View
                   </Link>
                   <button
                     onClick={() => handleDelete(campaign.id)}
-                    className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm transition-colors"
+                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition-colors"
                   >
                     Delete
                   </button>
