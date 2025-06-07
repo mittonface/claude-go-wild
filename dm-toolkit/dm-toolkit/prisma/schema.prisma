@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Campaign {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  sessions    Session[]
+  npcs        NPC[]
+  encounters  Encounter[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  title      String
+  date       DateTime
+  notes      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model NPC {
+  id          String      @id @default(cuid())
+  campaignId  String?
+  campaign    Campaign?   @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  name        String
+  race        String
+  class       String?
+  level       Int         @default(1)
+  alignment   String?
+  description String?
+  traits      String?
+  stats       String      // JSON string for stat block
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  encounters  EncounterNPC[]
+}
+
+model Encounter {
+  id           String         @id @default(cuid())
+  campaignId   String?
+  campaign     Campaign?      @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  name         String
+  description  String?
+  difficulty   String?
+  totalXP      Int            @default(0)
+  partyLevel   Int            @default(1)
+  partySize    Int            @default(4)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  npcs         EncounterNPC[]
+}
+
+model EncounterNPC {
+  id          String    @id @default(cuid())
+  encounterId String
+  encounter   Encounter @relation(fields: [encounterId], references: [id], onDelete: Cascade)
+  npcId       String
+  npc         NPC       @relation(fields: [npcId], references: [id], onDelete: Cascade)
+  quantity    Int       @default(1)
+  initiative  Int?
+  currentHp   Int?
+  maxHp       Int?
+  notes       String?
+  
+  @@unique([encounterId, npcId])
+}
+
+model DiceRoll {
+  id        String   @id @default(cuid())
+  formula   String
+  result    String
+  total     Int
+  details   String   // JSON string for roll breakdown
+  createdAt DateTime @default(now())
+}
+
+model LootItem {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  rarity      String
+  value       Int?
+  description String?
+  properties  String?  // JSON string for item properties
+  createdAt   DateTime @default(now())
+}
